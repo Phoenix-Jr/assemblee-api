@@ -1,0 +1,386 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .dashboard-container {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 30px;
+        padding: 25px;
+        background:  #1F3C61;
+        border-radius: 15px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+    
+    .stat-card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .stat-card-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+    
+    .stat-card-label {
+        color: #7f8c8d;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .quick-action-btn {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        text-decoration: none;
+        color: #495057;
+        transition: all 0.3s;
+        display: block;
+    }
+    
+    .quick-action-btn:hover {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .quick-action-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 25px;
+    }
+    
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    
+    .dashboard-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .dashboard-card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .event-item, .baptism-item {
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s;
+    }
+    
+    .event-item:hover, .baptism-item:hover {
+        transform: translateX(5px);
+        background: #f0f0f0;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1 style="margin: 0; font-size: 28px; font-weight: 600;">🙏 Tableau de Bord</h1>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Bienvenue dans l'administration de l'Assemblée Évangélique</p>
+    </div>
+    
+    <!-- Statistiques -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                ⛪
+            </div>
+            <div class="stat-card-value">3</div>
+            <div class="stat-card-label">Communautés Actives</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%); color: white;">
+                👥
+            </div>
+            <div class="stat-card-value">1,050</div>
+            <div class="stat-card-label">Total Membres</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                📅
+            </div>
+            <div class="stat-card-value">12</div>
+            <div class="stat-card-label">Événements à Venir</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                💧
+            </div>
+            <div class="stat-card-value">105</div>
+            <div class="stat-card-label">Baptêmes Cette Année</div>
+        </div>
+    </div>
+    
+    <!-- Actions Rapides -->
+    <h2 style="font-size: 20px; color: #2c3e50; margin-bottom: 20px;">⚡ Actions Rapides</h2>
+    <div class="quick-actions">
+        <a href="/admin/communities/community/add/" class="quick-action-btn">
+            <span class="quick-action-icon">➕</span>
+            Nouvelle Communauté
+        </a>
+        <a href="/admin/communities/event/add/" class="quick-action-btn">
+            <span class="quick-action-icon">📅</span>
+            Nouvel Événement
+        </a>
+        <a href="/admin/communities/member/add/" class="quick-action-btn">
+            <span class="quick-action-icon">👤</span>
+            Nouveau Membre
+        </a>
+        <a href="/admin/communities/baptism/add/" class="quick-action-btn">
+            <span class="quick-action-icon">💧</span>
+            Nouveau Baptême
+        </a>
+        <a href="/admin/communities/ministry/add/" class="quick-action-btn">
+            <span class="quick-action-icon">🏛️</span>
+            Nouveau Ministère
+        </a>
+        <a href="/admin/communities/meditation/add/" class="quick-action-btn">
+            <span class="quick-action-icon">📖</span>
+            Nouvelle Méditation
+        </a>
+    </div>
+    
+    <!-- Grille du tableau de bord -->
+    <div class="dashboard-grid">
+        <!-- Prochains Événements -->
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <div class="dashboard-card-title">
+                    <span>📅</span>
+                    Prochains Événements
+                </div>
+                <a href="/admin/communities/event/" style="color: #667eea; text-decoration: none;">Voir tout →</a>
+            </div>
+            <div class="event-list">
+                <div class="event-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Nuit de Prière</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                📍 Mpita | 📅 20 Sept 2024
+                            </div>
+                        </div>
+                        <span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            Dans 3 jours
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Baptême Collectif</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                📍 Mpita | 📅 29 Sept 2024
+                            </div>
+                        </div>
+                        <span style="background: #ffc107; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            Dans 12 jours
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Conférence Mariage</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                📍 Plateaux | 📅 22 Sept 2024
+                            </div>
+                        </div>
+                        <span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            Dans 5 jours
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Baptêmes Programmés -->
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <div class="dashboard-card-title">
+                    <span>💧</span>
+                    Baptêmes Programmés
+                </div>
+                <a href="/admin/communities/baptism/" style="color: #667eea; text-decoration: none;">Voir tout →</a>
+            </div>
+            <div class="baptism-list">
+                <div class="baptism-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Communauté Mpita</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                12 candidats | 29 Sept 2024
+                            </div>
+                        </div>
+                        <span style="background: #2196f3; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            En préparation
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="baptism-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Communauté Plateaux</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                8 candidats | 13 Oct 2024
+                            </div>
+                        </div>
+                        <span style="background: #2196f3; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            En préparation
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="baptism-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Communauté Centre-Ville</strong>
+                            <div style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">
+                                6 candidats | 27 Oct 2024
+                            </div>
+                        </div>
+                        <span style="background: #2196f3; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px;">
+                            En préparation
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Graphique des statistiques -->
+    <div class="dashboard-card" style="margin-top: 25px;">
+        <div class="dashboard-card-header">
+            <div class="dashboard-card-title">
+                <span>📊</span>
+                Statistiques Globales
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="globalStatsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('globalStatsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Mpita', 'Plateaux', 'Centre-Ville'],
+            datasets: [
+                {
+                    label: 'Membres',
+                    data: [450, 320, 280],
+                    backgroundColor: 'rgba(102, 126, 234, 0.5)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Baptêmes 2024',
+                    data: [45, 32, 28],
+                    backgroundColor: 'rgba(116, 75, 162, 0.5)',
+                    borderColor: 'rgba(116, 75, 162, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

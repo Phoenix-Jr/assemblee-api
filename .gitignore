@@ -1,0 +1,9 @@
+.vscode/
+communities/__pycache__
+communities/migrations/__pycache__
+communities/management/__pycache__/
+communities/management/commands/__pycache__/
+users/__pycache__
+users/migrations/__pycache__
+env/
+core/__pycache__
