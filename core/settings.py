@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # Your apps
     'communities',  # Nom de votre app
+    'dayliVerset',
 ]
 
 REST_FRAMEWORK = {
